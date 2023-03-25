@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Nav() {
-    const navColorHex = '#0E86D4'
+    const navColorHex = 'bg-[#0E86D4]'
     const [ isVisible, setIsVisible ] = useState(false)
 
     function toggleMenu() {
@@ -28,14 +28,14 @@ export default function Nav() {
     const loggedIn = false
 
     return (
-        <nav className={`flex flex-row items-center justify-between flex-wrap w-full fixed p-3 bg-[${navColorHex}] text-white z-10`}>
+        <nav className={`flex flex-row items-center justify-between flex-wrap w-full fixed p-3 text-white z-10 ` + navColorHex}>
             <div className='mr-3 text-2xl h-8'>
                 Seer Weather App
             </div>
             <div className='md:hidden'>
                 <button 
                     onClick={toggleMenu}
-                    className={`flex items-center justify-center text-gray-400 border border-[${navColorHex}] rounded hover:text-white hover:border-white py-1 px-2 text-xl`}
+                    className={`flex items-center justify-center text-gray-400 border rounded hover:text-white hover:border-white py-1 px-2 text-xl ` + navColorHex}
                 >
                     <i className='fas fa-bars'></i>
                 </button>
