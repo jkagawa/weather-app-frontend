@@ -3,14 +3,14 @@ import { TextField } from '@mui/material'
 
 interface Props {
     name: string,
-    placeholder: string
-    type: string
+    placeholder?: string
+    type: string,
+    label?: string
+    id?: string
 }
 const Input = forwardRef((props: Props, ref) => {
   return (
     <TextField
-        variant="outlined"
-        margin="normal"
         inputRef={ref}
         fullWidth
         {...props}

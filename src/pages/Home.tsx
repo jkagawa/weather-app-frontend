@@ -13,13 +13,14 @@ export default function Home() {
     weatherData, getData, 
     getHourly, hourlyData, 
     defaultLatitude, defaultLongitude,
-    getLocation, locationData, setLocationData
+    getLocation, locationData, setLocationData,
+    defaultCity, defaultCityId
   } = useGetData()
   const [ modalOpen, setModalOpen ] = useState(false)
   const [ selectedItem, setSelectedItem ] = useState("")
   const [ currLatitude, setCurrLatitude ] = useState(defaultLatitude)
   const [ currLongitude, setCurrLongitude ] = useState(defaultLongitude)
-  const [ currentCity, setCurrentCity ] = useState<string>("New York City")
+  const [ currentCity, setCurrentCity ] = useState<string>(defaultCity)
   const { register, handleSubmit } = useForm({})
 
   function openModal(e: any, currDate: string) {
@@ -102,7 +103,7 @@ export default function Home() {
               onClick={() => selectLocation('40.71427','-74.00597', 'New York', '5128581')} 
               className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
                 New York
-              </button>
+            </button>
             <button 
               onClick={() => selectLocation('37.77493','-122.41942', 'San Francisco', '5391959')} 
               className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
@@ -121,16 +122,16 @@ export default function Home() {
             {/* Form */}
             <form 
               onSubmit={handleSubmit(onSubmit)} 
-              className='flex flex-row items-center justify-center w-full max-w-xl'
+              className='flex flex-row items-center justify-center max-w-xl'
             >
               {/* <label htmlFor="location" className="text-2xl">Search</label> */}
               <Input 
                 {...register('location')} 
                 name="location" 
-                placeholder="City or postal code" 
                 type="text"
+                label="City or postal code"
               />
-              <button className="flex justify-start m-3 p-2 rounded bg-gray-200 text-black hover:bg-slate-500 hover:text-white">
+              <button className='flex justify-start m-3 p-2 rounded bg-gray-200 text-black hover:bg-[#0E86D4] hover:text-white'>
                 Search
               </button>
             </form>
@@ -153,24 +154,50 @@ export default function Home() {
           <div className="text-4xl">{currentCity}</div>
 
           {/* Forecast Today */}
-          <div className="text-2xl">Today</div>
-          <div className="text-2xl">{dataForecast.length>0? `${dataForecast[0][3]} ${dataForecast[0][2]} - High: ${dataForecast[0][0]}, Low: ${dataForecast[0][1]} - ${dataForecast[0][4]} ${weatherCodeMap[dataForecast[0][4]]}` : ""}</div>
+          <div className='border p-2 m-2 max-w-screen-md'>
+            <div className="text-2xl">Today</div>
+            <div className="text-base">
+              { dataForecast.length>0? (
+                <div>
+                  <div>{dataForecast[0][3]} {dataForecast[0][2]}</div>
+                  <div className='flex flex-row items-center justify-evenly'>
+                    <div className='flex flex-row items-end'>
+                      <div className='p-2'>High</div>
+                      <div className='text-2xl p-2'>{dataForecast[0][0]}</div>
+                    </div>
+                    <div className='flex flex-row items-end'>
+                      <div className='p-2'>Low</div>
+                      <div className='text-2xl p-2'>{dataForecast[0][1]}</div>
+                    </div>
+                  </div>
+                  <div>{dataForecast[0][4]} {weatherCodeMap[dataForecast[0][4]]}</div>
+                </div>
+                ) : (<></>)
+              }
+            </div>
+          </div>
+          
           
           {/* 3-Day Forecast */}
-          <div className="text-base">3-Day Forecast</div>
-          {
-            dataForecast.map((d: any, index) => 
-              (<div key={index} data-id={d[5]} className={"cursor-pointer" + (index == 0? " font-bold" : "")} onClick={(e) => openModal(e, d[2])}>{d[3]} {d[2]} - High: {d[0]}, Low: {d[1]} - {d[4]} {weatherCodeMap[d[4]]}</div>)
-            )
-          }
-
+          <div className='border p-2 m-2 max-w-screen-md'>
+            <div className="text-base">3-Day Forecast</div>
+            {
+              dataForecast.map((d: any, index) => 
+                (<div key={index} data-id={d[5]} className={"hover:bg-gray-200 cursor-pointer" + (index == 0? " font-bold" : "")} onClick={(e) => openModal(e, d[2])}>{d[3]} {d[2]} - High: {d[0]}, Low: {d[1]} - {d[4]} {weatherCodeMap[d[4]]}</div>)
+              )
+            }
+          </div>
+          
           {/* Week Forecast */}
-          <div className="text-base">The Week</div>
-          {
-            dataWeek.map((d: any, index) => 
-              (<div key={index} data-id={d[5]} className={"cursor-pointer" + (index == currDay? " font-bold" : "")} onClick={(e) => openModal(e, d[2])}>{d[3]} {d[2]} - High: {d[0]}, Low: {d[1]} - {d[4]} {weatherCodeMap[d[4]]}</div>)
-            )
-          }
+          <div className='border p-2 m-2 max-w-screen-md'>
+            <div className="text-base">The Week</div>
+            {
+              dataWeek.map((d: any, index) => 
+                (<div key={index} data-id={d[5]} className={"hover:bg-gray-200 cursor-pointer" + (index == currDay? " font-bold" : "")} onClick={(e) => openModal(e, d[2])}>{d[3]} {d[2]} - High: {d[0]}, Low: {d[1]} - {d[4]} {weatherCodeMap[d[4]]}</div>)
+              )
+            }
+          </div>
+
       </div>
 
     </>

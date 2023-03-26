@@ -6,8 +6,10 @@ function useGetData() {
     const [ weatherData, setWeatherData ] = useState<{}>({})
     const [ hourlyData, setHourlyData ] = useState<{}>({})
     const [ locationData, setLocationData ] = useState<{}>({})
-    const defaultLatitude: string = '40.71'
-    const defaultLongitude: string = '-74.01'
+    const defaultLatitude: string = '40.71427'
+    const defaultLongitude: string = '-74.00597'
+    const defaultCity: string = 'New York'
+    const defaultCityId: string = '5128581'
 
     async function handleDataFetch(latitude: string, longitude: string) {
         const result = await server_calls.getForecast(latitude, longitude)
@@ -38,7 +40,9 @@ function useGetData() {
         defaultLongitude, 
         getLocation: handleFetchLocation, 
         locationData,
-        setLocationData
+        setLocationData,
+        defaultCity,
+        defaultCityId
     }
 }
 

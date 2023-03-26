@@ -42,9 +42,9 @@ export default function DayModal(props: Props) {
                 onClick={ (e) => e.stopPropagation() }
             >
                 <div className="w-full flex flex-col">
-                    <div className="flex flex-row space-apart">
+                    <div className="flex flex-row justify-end">
                         <p 
-                            className="flex justify-start m-3 bg-gray-400 p-2 rounded hover:bg-black text-white cursor-pointer"
+                            className="flex m-3 bg-gray-400 p-2 rounded hover:bg-black text-white cursor-pointer"
                             onClick={ props.closeModal }
                         >
                             <i className="fa-solid fa-xmark"></i>
