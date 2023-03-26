@@ -77,9 +77,11 @@ export default function Home() {
   }
 
   const onSubmit = (data: any, event: any) => {
-    const convertedLocation = encodeURI(data.location)
-    getLocation(convertedLocation)
-    event.target.reset()
+    if(data.location) {
+      const convertedLocation = encodeURI(data.location)
+      getLocation(convertedLocation)
+      event.target.reset()
+    }
   }
 
   return (
@@ -139,13 +141,13 @@ export default function Home() {
             {/* Results */}
             <div>
               {
-                hasData(locationData)? (
+                Object.hasOwn(locationData, 'results')? (
                   locationData.results.map((location: any, index) => (
                     <div key={index} className={"cursor-pointer"} onClick={() => selectLocation(location.latitude, location.longitude, location.name)}>{location.name} {location.country} {location.population} {location.timezone} {location.latitude} {location.longitude}, ID: {location.id}</div>)
                   )
-                ) : (
-                  <></>
-                )
+                ) : hasData(locationData)? (
+                  <div>No result found</div>
+                ) : (<></>)
               }
             </div>
           </div>
