@@ -1,9 +1,8 @@
 
-// const api_key = 'GL2azqA1dYt3aaOuf4Kl2Uv5HOsCuUoF'
-// const latitude = '40.71'
-// const longitude = '-74.01'
 const base_url = 'https://api.open-meteo.com/v1/forecast'
 const location_search_url = 'https://geocoding-api.open-meteo.com/v1/search'
+
+const backend_url = 'https://titanium-bright-hurricane.glitch.me'
 const options = {method: 'GET', headers: {accept: 'application/json'}};
 
 export const server_calls = {
@@ -34,6 +33,28 @@ export const server_calls = {
 
         if(!response.ok) {
             throw new Error('Failed to fetch data from server')
+        }
+
+        return await response.json()
+    },
+    
+    signUp: async (first_name: string, email: string, password: string) => {
+        const options_signup = {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: first_name,
+                email: email,
+                password: password
+            })
+        }
+
+        const response = await fetch(backend_url + '/signup', options_signup)
+
+        if(!response.ok) {
+            throw new Error('Failed to sign up new user')
         }
 
         return await response.json()
