@@ -58,5 +58,66 @@ export const server_calls = {
         }
 
         return await response.json()
+    },
+    
+    logIn: async (email: string, password: string) => {
+        const options_login = {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }
+
+        const response = await fetch(backend_url + '/signin', options_login)
+
+        if(!response.ok) {
+            throw new Error('Failed to log in')
+        }
+
+        return await response.json()
+    },
+    
+    getSavedLocations: async (token: string) => {
+        const options_get = {
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json',
+                'x-access-token': 'Bearer ' + token,
+                'access-control-allow-origin': '*'
+            }
+        }
+
+        const response = await fetch(backend_url + '/api/location', options_get)
+
+        if(!response.ok) {
+            throw new Error('Failed to retrieve data')
+        }
+
+        return await response.json()
+    },
+    
+    updateUserInfo: async (first_name: string, token: string) => {
+        const options_get = {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+                'x-access-token': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                first_name: first_name
+            })
+        }
+
+        const response = await fetch(backend_url + '/api/user', options_get)
+
+        if(!response.ok) {
+            throw new Error('Failed to update user')
+        }
+
+        return await response.json()
     }
 }

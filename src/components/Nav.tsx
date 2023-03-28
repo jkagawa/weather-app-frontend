@@ -1,10 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import HandleAuth from '../custom-hooks/HandleAuth'
 
-export default function Nav() {
+interface Props {
+    loggedIn: boolean,
+    setLoggedIn: any,
+    firstName: string,
+    email: string,
+    token: string
+}
+
+export default function Nav(props: Props) {
     const bgColorHex = 'bg-[#0E86D4]'
     const navColorHex = '[#0E86D4]'
-    const [ isVisible, setIsVisible ] = useState(false)
+    const [ isVisible, setIsVisible ] = useState<boolean>(false)
 
     function toggleMenu() {
         setIsVisible(!isVisible)
@@ -24,9 +33,9 @@ export default function Nav() {
 
     const signOut = async () => {
         toggleMenu()
+        localStorage.setItem('cookie_token', "")
+        props.setLoggedIn(false)
     }
-
-    const loggedIn = false
 
     return (
         <nav className={`flex flex-row items-center justify-between flex-wrap w-full fixed p-3 text-white z-10 ` + bgColorHex}>
@@ -55,7 +64,7 @@ export default function Nav() {
                                 </Link>
                             </button>
                             {
-                                !loggedIn? (
+                                !props.loggedIn? (
                                     <>
                                         <button className="py-3 px-2 md:py-0 text-gray-300 hover:text-white">
                                             <Link to='/signup' onClick={signUp}>

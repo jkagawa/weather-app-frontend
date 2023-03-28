@@ -41,6 +41,7 @@ export default function SignUp() {
                     </div>
                 ) : (<></>)
             }
+            
             {/* Error Message */}
             {
                 showError? (

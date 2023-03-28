@@ -4,15 +4,23 @@ import { server_calls } from "../api/server"
 
 function HandleAuth() {
     const [ signUpData, setSignUpData ] = useState<{}>({})
+    const [ logInData, setLogInData ] = useState<{}>({})
 
     async function handleSignUp(first_name: string, email: string, password: string) {
         const result = await server_calls.signUp(first_name, email, password)
         setSignUpData(result)
     }
 
+    async function handleLogIn(email: string, password: string) {
+        const result = await server_calls.logIn(email, password)
+        setLogInData(result)
+    }
+
     return { 
         signUpData,
-        handleSignUp
+        handleSignUp,
+        logInData,
+        handleLogIn
     }
 }
 

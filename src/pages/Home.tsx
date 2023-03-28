@@ -14,13 +14,17 @@ export default function Home() {
     getHourly, hourlyData, 
     defaultLatitude, defaultLongitude,
     getLocation, locationData, setLocationData,
-    defaultCity, defaultCityId
+    defaultCity, defaultCityId, defaultTimeZone
   } = useGetData()
+
   const [ modalOpen, setModalOpen ] = useState(false)
   const [ selectedItem, setSelectedItem ] = useState("")
   const [ currLatitude, setCurrLatitude ] = useState(defaultLatitude)
   const [ currLongitude, setCurrLongitude ] = useState(defaultLongitude)
   const [ currentCity, setCurrentCity ] = useState<string>(defaultCity)
+  const [ currentCityId, setCurrentCityId ] = useState<string>(defaultCityId)
+  const [ currentTimeZone, setCurrentTimeZone ] = useState<string>(defaultTimeZone)
+
   const { register, handleSubmit } = useForm({})
 
   function openModal(e: any, currDate: string) {
@@ -33,10 +37,12 @@ export default function Home() {
     setModalOpen(false)
   }
 
-  const selectLocation = (latitude: string, longitude: string, city: string, id: string) => {
+  const selectLocation = (latitude: string, longitude: string, city: string, id: string, timezone: string) => {
     setCurrentCity(city)
     setCurrLatitude(latitude)
     setCurrLongitude(longitude)
+    setCurrentCityId(id)
+    setCurrentTimeZone(timezone)
     getData(latitude, longitude)
     setLocationData({})
   }
@@ -84,6 +90,10 @@ export default function Home() {
     }
   }
 
+  const saveLocation = () => {
+    console.log(currentCity, currLatitude, currLongitude, currentCityId, currentTimeZone)
+  }
+
   return (
     <>
       <DayModal 
@@ -98,25 +108,6 @@ export default function Home() {
 
           {/* Heading */}
           <div className="text-4xl font-semibold p-4">Welcome to Seer!</div>
-
-          {/* Suggested locations */}
-          <div className='flex flex-row'>
-            <button 
-              onClick={() => selectLocation('40.71427','-74.00597', 'New York', '5128581')} 
-              className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                New York
-            </button>
-            <button 
-              onClick={() => selectLocation('37.77493','-122.41942', 'San Francisco', '5391959')} 
-              className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                San Francisco
-            </button>
-            <button 
-              onClick={() => selectLocation('41.85003','-87.65005', 'Chicago', '4887398')} 
-              className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                Chicago
-            </button>
-          </div>
 
           {/* Search location */}
           <div className='flex flex-col items-center justify-center'>
@@ -143,7 +134,13 @@ export default function Home() {
               {
                 Object.hasOwn(locationData, 'results')? (
                   locationData.results.map((location: any, index) => (
-                    <div key={index} className={"cursor-pointer"} onClick={() => selectLocation(location.latitude, location.longitude, location.name)}>{location.name} {location.country} {location.population} {location.timezone} {location.latitude} {location.longitude}, ID: {location.id}</div>)
+                    <button 
+                      key={index} 
+                      className={"bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"} 
+                      onClick={() => selectLocation(location.latitude, location.longitude, location.name, location.id, location.timezone)}
+                    >
+                      {location.name} {location.country} {location.population} {location.timezone} {location.latitude} {location.longitude}, ID: {location.id}, Time Zone: {location.timezone}
+                    </button>)
                   )
                 ) : hasData(locationData)? (
                   <div>No result found</div>
@@ -151,9 +148,40 @@ export default function Home() {
               }
             </div>
           </div>
+
+          {/* Suggested locations */}
+          <div className='flex flex-col items-start bg-gray-50 m-4'>
+            <div className='text-sm mx-2'>Suggest locations</div>
+            <div className='flex flex-row'>
+              <button 
+                onClick={() => selectLocation('40.71427','-74.00597', 'New York', '5128581', 'America/New_York')} 
+                className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                  New York
+              </button>
+              <button 
+                onClick={() => selectLocation('37.77493','-122.41942', 'San Francisco', '5391959', 'America/Los_Angeles')} 
+                className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                  San Francisco
+              </button>
+              <button 
+                onClick={() => selectLocation('41.85003','-87.65005', 'Chicago', '4887398', 'America/Chicago')} 
+                className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                  Chicago
+              </button>
+            </div>
+          </div>
         
           {/* Current location */}
-          <div className="text-4xl">{currentCity}</div>
+          <div className='flex flex-row items-center justify-center'>
+            <div className="text-4xl">{currentCity}</div>
+            <button 
+              className='mx-2 flex flex-row items-center justify-center hover:text-[#0E86D4]'
+              onClick={saveLocation}
+            >
+              <i className="fa-solid fa-star mx-1"></i>
+              <div className='text-sm'>Save location</div>
+            </button>
+          </div>
 
           {/* Forecast Today */}
           <div className='border p-2 m-2 max-w-screen-md'>

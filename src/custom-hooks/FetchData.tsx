@@ -10,6 +10,7 @@ function useGetData() {
     const defaultLongitude: string = '-74.00597'
     const defaultCity: string = 'New York'
     const defaultCityId: string = '5128581'
+    const defaultTimeZone: string = 'America/New_York'
 
     async function handleDataFetch(latitude: string, longitude: string) {
         const result = await server_calls.getForecast(latitude, longitude)
@@ -42,7 +43,8 @@ function useGetData() {
         locationData,
         setLocationData,
         defaultCity,
-        defaultCityId
+        defaultCityId,
+        defaultTimeZone
     }
 }
 
