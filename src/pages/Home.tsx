@@ -6,9 +6,18 @@ import { hasData } from '../tools/functions'
 import { weatherCodeMap } from '../tools/weatherCodeMap'
 import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
+import HandleDB from '../custom-hooks/HandleDB'
 
+interface Props {
+  loggedIn: boolean,
+  setLoggedIn: any,
+  firstName: string,
+  email: string,
+  token: string,
+  setFirstName: any
+}
 
-export default function Home() {
+export default function Home(props: Props) {
   const { 
     weatherData, getData, 
     getHourly, hourlyData, 
@@ -24,6 +33,8 @@ export default function Home() {
   const [ currentCity, setCurrentCity ] = useState<string>(defaultCity)
   const [ currentCityId, setCurrentCityId ] = useState<string>(defaultCityId)
   const [ currentTimeZone, setCurrentTimeZone ] = useState<string>(defaultTimeZone)
+
+  const { handleSaveLocation } = HandleDB()
 
   const { register, handleSubmit } = useForm({})
 
@@ -91,7 +102,8 @@ export default function Home() {
   }
 
   const saveLocation = () => {
-    console.log(currentCity, currLatitude, currLongitude, currentCityId, currentTimeZone)
+    console.log(props.token, currentCity, currLatitude, currLongitude, currentCityId, currentTimeZone)
+    handleSaveLocation(props.token, currentCity, currLatitude, currLongitude, currentTimeZone, currentCityId)
   }
 
   return (

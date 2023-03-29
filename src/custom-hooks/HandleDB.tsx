@@ -16,11 +16,17 @@ function HandleDB() {
         setUserInfo(result)
     }
 
+    async function handleSaveLocation(token: string, name: string, latitude: string, longitude: string, timezone: string, location_api_id: string) {
+        const result = await server_calls.saveLocation(token, name, latitude, longitude, timezone, location_api_id)
+        setSavedLocations(result)
+    }
+
     return { 
         savedLocations,
         handleGetSavedLocations,
         userInfo,
-        handleUpdateUserInfo
+        handleUpdateUserInfo,
+        handleSaveLocation
     }
 }
 
