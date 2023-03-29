@@ -189,7 +189,7 @@ export default function Home(props: Props) {
           </div>
 
           {/* Suggested locations */}
-          <div className='flex flex-col items-start bg-gray-50 m-4'>
+          <div className='flex flex-col items-start max-w-screen-lg bg-gray-50 m-4'>
             <div className='text-sm mx-2'>Suggest locations</div>
             <div className='flex flex-row'>
               <button 
@@ -235,23 +235,30 @@ export default function Home(props: Props) {
           </div>
 
           {/* Forecast Today */}
-          <div className='border p-2 m-2 max-w-screen-md'>
+          <div className='p-2 max-w-screen-lg bg-gray-50 m-4'>
             <div className="text-2xl">Today</div>
             <div className="text-base">
               { dataForecast.length>0? (
                 <div>
-                  <div>{dataForecast[0][3]} {dataForecast[0][2]}</div>
+                  <div className="text-xs">
+                    {dataForecast[0][3]} {dataForecast[0][2]}
+                  </div>
+
                   <div className='flex flex-row items-center justify-evenly'>
-                    <div className='flex flex-row items-end'>
-                      <div className='p-2'>High</div>
+                    <div className='flex flex-row items-center'>
+                      <div className='p-2 text-xs'>High</div>
                       <div className='text-2xl p-2'>{dataForecast[0][0]}</div>
                     </div>
-                    <div className='flex flex-row items-end'>
-                      <div className='p-2'>Low</div>
+
+                    <div className='flex flex-row items-center'>
+                      <div className='p-2 text-xs'>Low</div>
                       <div className='text-2xl p-2'>{dataForecast[0][1]}</div>
                     </div>
                   </div>
-                  <div>{dataForecast[0][4]} {weatherCodeMap[dataForecast[0][4]]}</div>
+
+                  <div>
+                    {dataForecast[0][4]} {weatherCodeMap[dataForecast[0][4]]}
+                  </div>
                 </div>
                 ) : (<></>)
               }
@@ -260,23 +267,82 @@ export default function Home(props: Props) {
           
           
           {/* 3-Day Forecast */}
-          <div className='border p-2 m-2 max-w-screen-md'>
-            <div className="text-base">3-Day Forecast</div>
-            {
-              dataForecast.map((d: any, index) => 
-                (<div key={index} data-id={d[5]} className={"hover:bg-gray-200 cursor-pointer" + (index == 0? " font-bold" : "")} onClick={(e) => openModal(e, d[2])}>{d[3]} {d[2]} - High: {d[0]}, Low: {d[1]} - {d[4]} {weatherCodeMap[d[4]]}</div>)
-              )
-            }
+          <div className='p-2 max-w-screen-md bg-gray-50 m-4'>
+            <div className="text-2xl">3-Day Forecast</div>
+            <div className='flex flex-row'>
+              {
+                dataForecast.map((d: any, index) => 
+                  (
+                    <div 
+                      key={index} 
+                      data-id={d[5]} 
+                      className={"flex flex-col items-center justify-center hover:bg-gray-200 m-1 p-2 cursor-pointer border rounded-xl" + (index == 0? " bg-gray-100 border-gray-50" : " border-gray-50")} 
+                      onClick={(e) => openModal(e, d[2])}
+                    >
+                      <div className='flex flex-col items-center justify-center'>
+                        <div className='text-lg'>{d[3]}</div>
+                        <div className='text-xs'>{d[2]}</div>
+                      </div>
+
+                      <div className='flex flex-row items-center justify-center'>
+                        <div className='flex flex-col items-center justify-center m-2'>
+                          <div className='text-xs'>High</div>
+                          <div className='text-xl mx-2'>{d[0]}</div>
+                        </div>
+
+                        <div className='flex flex-col items-center justify-center m-2'>
+                          <div className='text-xs'>Low</div>
+                          <div className='text-xl mx-2'>{d[1]}</div>
+                        </div>
+                      </div>
+
+                      <div className='flex flex-col items-center justify-center'>
+                        {weatherCodeMap[d[4]]}
+                      </div>
+                    </div>
+                  )
+                )
+              }
+            </div>
           </div>
           
           {/* Week Forecast */}
-          <div className='border p-2 m-2 max-w-screen-md'>
-            <div className="text-base">The Week</div>
-            {
-              dataWeek.map((d: any, index) => 
-                (<div key={index} data-id={d[5]} className={"hover:bg-gray-200 cursor-pointer" + (index == currDay? " font-bold" : "")} onClick={(e) => openModal(e, d[2])}>{d[3]} {d[2]} - High: {d[0]}, Low: {d[1]} - {d[4]} {weatherCodeMap[d[4]]}</div>)
-              )
-            }
+          <div className='p-2 max-w-screen-md bg-gray-50 m-4'>
+            <div className="text-2xl">The Week</div>
+            <div className='flex flex-col'>
+              {
+                dataWeek.map((d: any, index) => 
+                  (
+                    <div 
+                      key={index} 
+                      data-id={d[5]} 
+                      className={"flex flex-row items-center justify-center hover:bg-gray-200 m-1 p-2 cursor-pointer border rounded-xl" + (index == currDay? " bg-gray-100 border-gray-50" : " border-gray-50")} onClick={(e) => openModal(e, d[2])}
+                    >
+                      <div className='w-1/4'>
+                        <div className='text-lg'>{d[3]}</div>
+                        <div className='text-xs'>{d[2]}</div>
+                      </div>
+
+                      <div className='w-1/4'>
+                        <div className='text-xs'>High</div>
+                        <div className='text-xl mx-2'>{d[0]}</div>
+                      </div>
+
+                      <div className='w-1/4'>
+                        <div className='text-xs'>Low</div>
+                        <div className='text-xl mx-2'>{d[1]}</div>
+                      </div>
+
+                      <div className='w-1/4'>
+                        <div>{d[4]}</div>
+                        <div>{weatherCodeMap[d[4]]}</div>
+                      </div>
+                    </div>
+                  )
+                )
+              }
+            </div>
+            
           </div>
 
       </div>
