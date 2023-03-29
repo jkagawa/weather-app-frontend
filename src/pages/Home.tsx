@@ -33,8 +33,9 @@ export default function Home(props: Props) {
   const [ currentCity, setCurrentCity ] = useState<string>(defaultCity)
   const [ currentCityId, setCurrentCityId ] = useState<string>(defaultCityId)
   const [ currentTimeZone, setCurrentTimeZone ] = useState<string>(defaultTimeZone)
+  const [ locationSaved, setLocationSaved ] = useState(false)
 
-  const { handleSaveLocation } = HandleDB()
+  const { handleSaveLocation, savedLocations, handleGetSavedLocations } = HandleDB()
 
   const { register, handleSubmit } = useForm({})
 
@@ -105,6 +106,32 @@ export default function Home(props: Props) {
     console.log(props.token, currentCity, currLatitude, currLongitude, currentCityId, currentTimeZone)
     handleSaveLocation(props.token, currentCity, currLatitude, currLongitude, currentTimeZone, currentCityId)
   }
+
+  const checkIfLocationSaved = () => {
+    setLocationSaved(false)
+    if(savedLocations.length>0) {
+      for(let i=0; i<savedLocations.length; i++) {
+        const location = savedLocations[i]
+        if(location.location_api_id.toString() == currentCityId.toString()) {
+          setLocationSaved(true)
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(props.token) {
+      handleGetSavedLocations(props.token)
+    }
+  }, [props.token])
+
+  useEffect(() => {
+    checkIfLocationSaved()
+  }, [currentCityId])
+
+  useEffect(() => {
+    checkIfLocationSaved()
+  }, [savedLocations])
 
   return (
     <>
@@ -186,13 +213,25 @@ export default function Home(props: Props) {
           {/* Current location */}
           <div className='flex flex-row items-center justify-center'>
             <div className="text-4xl">{currentCity}</div>
-            <button 
-              className='mx-2 flex flex-row items-center justify-center hover:text-[#0E86D4]'
-              onClick={saveLocation}
-            >
-              <i className="fa-solid fa-star mx-1"></i>
-              <div className='text-sm'>Save location</div>
-            </button>
+            {
+              !locationSaved? (
+                <button 
+                  className='mx-2 flex flex-row items-center justify-center hover:text-[#0E86D4]'
+                  onClick={saveLocation}
+                >
+                  <i className="fa-solid fa-star mx-1"></i>
+                  <div className='text-sm'>Save location</div>
+                </button>
+              ) : (
+                <div 
+                  className='mx-2 flex flex-row items-center justify-center text-[#0E86D4]'
+                >
+                  <i className="fa-solid fa-star mx-1"></i>
+                  <div className='text-sm'>Saved</div>
+                </div>
+              )
+            }
+            
           </div>
 
           {/* Forecast Today */}
