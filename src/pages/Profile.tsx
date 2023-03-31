@@ -19,7 +19,7 @@ export default function Profile(props: Props) {
     const [ showError, setShowError ] = useState<boolean>(false)
     
     const { register, handleSubmit } = useForm({})
-    const { userInfo, handleUpdateUserInfo } = HandleDB()
+    const { userInfo, handleUpdateUserInfo, handleDeleteSavedLocation } = HandleDB()
 
     const toggleShowTextBox = () => {
       SetShowTextBox(!showTextBox)
@@ -34,6 +34,17 @@ export default function Profile(props: Props) {
     const closeToast = () => {
       setShowToast(false)
       setShowError(false)
+    }
+
+    const deleteItem = async (name: string, location_id: string) => {
+      const response = confirm(`Are you sure you want to delete ${name}?`)
+      if(response) {
+        handleDeleteSavedLocation(props.token, location_id)
+        const output = await handleGetSavedLocations(props.token)
+        if(output) {
+          setTimeout(() => window.location.reload(), 500)
+        }
+      }
     }
 
     useEffect(() => {
@@ -94,11 +105,24 @@ export default function Profile(props: Props) {
             <div className="flex flex-col items-center justify-center text-center pt-14">
               <div className="text-4xl font-semibold p-4">Hi, {props.firstName}</div>
               <div>
-                <div>Your saved locations</div>
+                <div className='text-xl'>Your saved locations</div>
                 {
                   savedLocations.length>0? (
                     savedLocations.map((location: any, index) => (
-                      <div>{location.name}</div>)
+                        <div className='flex flex-row items-center justify-center m-3 group'>
+                          <div className='mx-2'>
+                            {location.name}
+                          </div>
+
+                          <button 
+                            className='bg-red-500 text-white h-6 w-6 rounded-full hidden group-hover:block'
+                            onClick={() => deleteItem(location.name, location.id)}
+                          >
+                            <i className="fa-solid fa-xmark"></i>
+                          </button>
+                        </div>
+                        
+                      )
                     )
                   ) : (
                     <>EMPTY</>

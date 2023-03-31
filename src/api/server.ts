@@ -145,5 +145,23 @@ export const server_calls = {
         }
 
         return await response.json()
+    },
+
+    deleteSavedLocation: async (token: string, location_id: string) => {
+        const options_delete = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type' : 'application/json',
+                'x-access-token': 'Bearer ' + token
+            }
+        }
+
+        const response = await fetch(backend_url + '/api/location/' + location_id, options_delete)
+
+        if(!response.ok) {
+            throw new Error('Failed to delete item from the database')
+        }
+
+        return await response.json()
     }
 }

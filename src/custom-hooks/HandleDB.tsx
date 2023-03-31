@@ -9,6 +9,7 @@ function HandleDB() {
     async function handleGetSavedLocations(token: string) {
         const result = await server_calls.getSavedLocations(token)
         setSavedLocations(result)
+        return result
     }
 
     async function handleUpdateUserInfo(first_name: string, token: string) {
@@ -21,12 +22,19 @@ function HandleDB() {
         setSavedLocations(result)
     }
 
+    async function handleDeleteSavedLocation(token: string, location_id: string) {
+        const result = await server_calls.deleteSavedLocation(token, location_id)
+        const output = await handleGetSavedLocations(token)
+        return output
+    }
+
     return { 
         savedLocations,
         handleGetSavedLocations,
         userInfo,
         handleUpdateUserInfo,
-        handleSaveLocation
+        handleSaveLocation,
+        handleDeleteSavedLocation
     }
 }
 

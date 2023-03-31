@@ -272,7 +272,7 @@ export default function Home(props: Props) {
           {/* 3-Day Forecast */}
           <div className='p-2 w-full max-w-screen-md bg-gray-50 m-4'>
             <div className="text-2xl">3-Day Forecast</div>
-            <div className='flex flex-row'>
+            <div className='flex flex-row items-center justify-center'>
               {
                 dataForecast.map((d: any, index) => 
                   (
