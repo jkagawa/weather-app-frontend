@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
 import HandleDB from '../custom-hooks/HandleDB'
 
+import drizzle from '../assets/drizzle.png'
+
 interface Props {
   loggedIn: boolean,
   setLoggedIn: any,
@@ -247,17 +249,18 @@ export default function Home(props: Props) {
                   <div className='flex flex-row items-center justify-evenly'>
                     <div className='flex flex-row items-center'>
                       <div className='p-2 text-xs'>High</div>
-                      <div className='text-2xl p-2'>{dataForecast[0][0]}</div>
+                      <div className='text-2xl p-2'>{Math.round(Number(dataForecast[0][0]))}</div>
                     </div>
 
                     <div className='flex flex-row items-center'>
                       <div className='p-2 text-xs'>Low</div>
-                      <div className='text-2xl p-2'>{dataForecast[0][1]}</div>
+                      <div className='text-2xl p-2'>{Math.round(Number(dataForecast[0][1]))}</div>
                     </div>
                   </div>
 
-                  <div>
-                    {dataForecast[0][4]} {weatherCodeMap[dataForecast[0][4]]}
+                  <div className='flex flex-col items-center justify-center'>
+                    <div className='w-32'><img src={weatherCodeMap[dataForecast[0][4]][1]} alt={weatherCodeMap[dataForecast[0][4]][0]} /></div>
+                    <div className='w-48 text-xs'>{weatherCodeMap[dataForecast[0][4]][0]}</div>
                   </div>
                 </div>
                 ) : (<></>)
@@ -267,7 +270,7 @@ export default function Home(props: Props) {
           
           
           {/* 3-Day Forecast */}
-          <div className='p-2 max-w-screen-md bg-gray-50 m-4'>
+          <div className='p-2 w-full max-w-screen-md bg-gray-50 m-4'>
             <div className="text-2xl">3-Day Forecast</div>
             <div className='flex flex-row'>
               {
@@ -287,17 +290,18 @@ export default function Home(props: Props) {
                       <div className='flex flex-row items-center justify-center'>
                         <div className='flex flex-col items-center justify-center m-2'>
                           <div className='text-xs'>High</div>
-                          <div className='text-xl mx-2'>{d[0]}</div>
+                          <div className='text-xl mx-2'>{Math.round(Number(d[0]))}</div>
                         </div>
 
                         <div className='flex flex-col items-center justify-center m-2'>
                           <div className='text-xs'>Low</div>
-                          <div className='text-xl mx-2'>{d[1]}</div>
+                          <div className='text-xl mx-2'>{Math.round(Number(d[1]))}</div>
                         </div>
                       </div>
 
                       <div className='flex flex-col items-center justify-center'>
-                        {weatherCodeMap[d[4]]}
+                        <div className='w-16'><img src={weatherCodeMap[d[4]][1]} alt={weatherCodeMap[d[4]][0]} /></div>
+                        <div className='w-48 text-xs'>{weatherCodeMap[d[4]][0]}</div>
                       </div>
                     </div>
                   )
@@ -307,7 +311,7 @@ export default function Home(props: Props) {
           </div>
           
           {/* Week Forecast */}
-          <div className='p-2 max-w-screen-md bg-gray-50 m-4'>
+          <div className='p-2 w-full max-w-screen-md bg-gray-50 m-4'>
             <div className="text-2xl">The Week</div>
             <div className='flex flex-col'>
               {
@@ -325,17 +329,17 @@ export default function Home(props: Props) {
 
                       <div className='w-1/4'>
                         <div className='text-xs'>High</div>
-                        <div className='text-xl mx-2'>{d[0]}</div>
+                        <div className='text-xl mx-2'>{Math.round(Number(d[0]))}</div>
                       </div>
 
                       <div className='w-1/4'>
                         <div className='text-xs'>Low</div>
-                        <div className='text-xl mx-2'>{d[1]}</div>
+                        <div className='text-xl mx-2'>{Math.round(Number(d[1]))}</div>
                       </div>
 
-                      <div className='w-1/4'>
-                        <div>{d[4]}</div>
-                        <div>{weatherCodeMap[d[4]]}</div>
+                      <div className='w-1/4 flex flex-col items-center justify-center'>
+                        <div className='w-16'><img src={weatherCodeMap[d[4]][1]} alt={weatherCodeMap[d[4]][0]} /></div>
+                        <div className='w-32 text-xs'>{weatherCodeMap[d[4]][0]}</div>
                       </div>
                     </div>
                   )

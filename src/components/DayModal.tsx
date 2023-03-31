@@ -51,12 +51,23 @@ export default function DayModal(props: Props) {
                         </p>
                     </div>
                     <div className="flex-flex-col items-center text-center mt-3 p-2 overflow-auto">
-                        <div className="text-2xl">{props.id}</div>
-                        <div className="text-2xl">{props.currentCity}</div>
-                        <div className="text-2xl">{dayText} {date}</div>
+                        <div className="text-3xl">{props.currentCity}</div>
+                        <div className="text-sm">
+                            <div>{dayText}</div>
+                            <div>{date}</div>
+                        </div>
                         {
                             time.map((time: any, index) => 
-                                (<div key={index}>{time.split('T')[1]} {temp[index]} {weathercode[index]} {weatherCodeMap[weathercode[index]]}</div>)
+                                (
+                                    <div 
+                                        key={index}
+                                        className='flex flex-row items-center justify-evenly m-3'
+                                    >
+                                        <div>{time.split('T')[1]}</div>
+                                        <div className='text-xl'>{Math.round(Number(temp[index]))}°F</div>
+                                        <div className='w-12'><img src={weatherCodeMap[weathercode[index]][1]} alt={weatherCodeMap[weathercode[index]][0]} /></div>
+                                          
+                                    </div>)
                             )
                         }
                     </div>
