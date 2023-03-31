@@ -3,9 +3,9 @@ import { server_calls } from "../api/server"
 
 
 function useGetData() {
-    const [ weatherData, setWeatherData ] = useState<{}>({})
-    const [ hourlyData, setHourlyData ] = useState<{}>({})
-    const [ locationData, setLocationData ] = useState<{}>({})
+    const [ weatherData, setWeatherData ] = useState<{ [key: string]: any }>({})
+    const [ hourlyData, setHourlyData ] = useState<{ [key: string]: any }>({})
+    const [ locationData, setLocationData ] = useState<{ [key: string]: any }>({})
     const defaultLatitude: string = '40.71427'
     const defaultLongitude: string = '-74.00597'
     const defaultCity: string = 'New York'

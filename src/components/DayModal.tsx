@@ -8,15 +8,15 @@ interface Props {
     closeModal: () => void,
     id: string,
     currentCity: string,
-    hourlyData: {}
+    hourlyData: { [key: string]: {} } 
 }
 
 export default function DayModal(props: Props) {
 
-    let hourly: {} = {}
-    let time: [] = []
-    let temp: []  = []
-    let weathercode: string = ''
+    let hourly: { [key: string]: any[] } = {}
+    let time: string[] = []
+    let temp: string[]  = []
+    let weathercode: number[] = []
     let date: string = ''
     let dayText: string = ''
 

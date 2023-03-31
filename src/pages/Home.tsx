@@ -8,8 +8,6 @@ import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
 import HandleDB from '../custom-hooks/HandleDB'
 
-import drizzle from '../assets/drizzle.png'
-
 interface Props {
   loggedIn: boolean,
   setLoggedIn: any,
@@ -61,14 +59,6 @@ export default function Home(props: Props) {
     setLocationData({})
   }
 
-  // useEffect(() => {
-  //   console.log(weatherData)
-
-  //   if(hasData(weatherData)) {
-  //     maxTemps = weatherData.daily.temperature_2m_max
-  //   }
-  // }, [weatherData])
-
   let dataForecast = []
   let dataWeek = []
 
@@ -113,7 +103,7 @@ export default function Home(props: Props) {
     setLocationSaved(false)
     if(savedLocations.length>0) {
       for(let i=0; i<savedLocations.length; i++) {
-        const location = savedLocations[i]
+        const location: { [key: string]: any[] } = savedLocations[i]
         if(location.location_api_id.toString() == currentCityId.toString()) {
           setLocationSaved(true)
         }
@@ -174,7 +164,7 @@ export default function Home(props: Props) {
             <div>
               {
                 Object.hasOwn(locationData, 'results')? (
-                  locationData.results.map((location: any, index) => (
+                  locationData.results.map((location: any, index: any) => (
                     <button 
                       key={index} 
                       className={"bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"} 

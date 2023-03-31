@@ -4,7 +4,7 @@ import Nav from "./components/Nav"
 import routes from "./config/routes"
 
 function App() {
-  const [ loggedIn, setLoggedIn ] = useState(false)
+  const [ loggedIn, setLoggedIn ] = useState<boolean>(false)
   const [ firstName, setFirstName ] = useState("")
   const [ email, setEmail ] = useState("")
   const [ token, setToken ] = useState("")
@@ -20,13 +20,28 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Nav loggedIn={loggedIn} setLoggedIn={setLoggedIn} firstName={firstName} email={email} token={token}/>
+      <Nav 
+        loggedIn={loggedIn} 
+        setLoggedIn={setLoggedIn} 
+        firstName={firstName} 
+        email={email} 
+        token={token}
+      />
       <Routes>
         { routes.map((route, index) => (
           <Route
             key={index}
             path={route.path}
-            element={<route.component loggedIn={loggedIn} setLoggedIn={setLoggedIn} firstName={firstName} email={email} token={token} setFirstName={setFirstName}/>}
+            element={
+              <route.component 
+                loggedIn={loggedIn} 
+                setLoggedIn={setLoggedIn} 
+                firstName={firstName} 
+                email={email} 
+                token={token} 
+                setFirstName={setFirstName}
+              />
+            }
           />
         )) }
       </Routes>

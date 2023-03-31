@@ -5,7 +5,7 @@ import SignUp from '../pages/SignUp';
 
 interface RouteType {
     path: string,
-    component: () => JSX.Element,
+    component: any,
     name: string,
     protected: boolean
 }

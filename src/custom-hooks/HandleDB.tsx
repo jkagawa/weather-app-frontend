@@ -4,7 +4,7 @@ import { server_calls } from "../api/server"
 
 function HandleDB() {
     const [ savedLocations, setSavedLocations ] = useState<[]>([])
-    const [ userInfo, setUserInfo ] = useState<{}>({})
+    const [ userInfo, setUserInfo ] = useState<{ [key: string]: any }>({})
 
     async function handleGetSavedLocations(token: string) {
         const result = await server_calls.getSavedLocations(token)
