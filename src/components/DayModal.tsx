@@ -8,7 +8,7 @@ interface Props {
     closeModal: () => void,
     id: string,
     currentCity: string,
-    hourlyData: { [key: string]: {} } 
+    hourlyData: { [key: string]: any } 
 }
 
 export default function DayModal(props: Props) {
@@ -19,6 +19,7 @@ export default function DayModal(props: Props) {
     let weathercode: number[] = []
     let date: string = ''
     let dayText: string = ''
+    let timezone_abbreviation: string = ''
 
     if(hasData(props.hourlyData)) {
         hourly = props.hourlyData.hourly
@@ -26,6 +27,7 @@ export default function DayModal(props: Props) {
         temp = hourly.temperature_2m
         weathercode = hourly.weathercode
         date = time[0].split('T')[0]
+        timezone_abbreviation = props.hourlyData.timezone_abbreviation
 
         const newDate = new Date(date)
         dayText = daysOfWeek[newDate.getDay()]
@@ -54,7 +56,7 @@ export default function DayModal(props: Props) {
                         <div className="text-3xl">{props.currentCity}</div>
                         <div className="text-sm">
                             <div>{dayText}</div>
-                            <div>{date}</div>
+                            <div>{date} {timezone_abbreviation}</div>
                         </div>
                         {
                             time.map((time: any, index) => 

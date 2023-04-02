@@ -110,16 +110,20 @@ export default function Profile(props: Props) {
                   savedLocations.length>0? (
                     savedLocations.map((location: any, index) => (
                         <div className='flex flex-row items-center justify-center m-3 group'>
-                          <div className='mx-2'>
-                            {location.name}
-                          </div>
+                          <div className='flex flex-row bg-gray-200 rounded-2xl py-1 px-2 mx-2'>
 
-                          <button 
-                            className='bg-red-500 text-white h-6 w-6 rounded-full hidden group-hover:block'
-                            onClick={() => deleteItem(location.name, location.id)}
-                          >
-                            <i className="fa-solid fa-xmark"></i>
-                          </button>
+                            <div className=''>
+                              {location.name}
+                            </div>
+
+                            <button 
+                              className='bg-red-500 text-white h-6 w-6 rounded-full hidden group-hover:block ml-1'
+                              onClick={() => deleteItem(location.name, location.id)}
+                            >
+                              <i className="fa-solid fa-xmark"></i>
+                            </button>
+                          </div>
+                          
                         </div>
                         
                       )

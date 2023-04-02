@@ -12,6 +12,12 @@ function useGetData() {
     const defaultCityId: string = '5128581'
     const defaultTimeZone: string = 'America/New_York'
 
+    let newDate = new Date()
+    const year = newDate.toLocaleString("default", { year: "numeric" })
+    const month = newDate.toLocaleString("default", { month: "2-digit" })
+    const day = newDate.toLocaleString("default", { day: "2-digit" })
+    const dateToday = year + '-' + month + '-' + day
+
     async function handleDataFetch(latitude: string, longitude: string) {
         const result = await server_calls.getForecast(latitude, longitude)
         setWeatherData(result)
@@ -29,7 +35,14 @@ function useGetData() {
     
     // useEffect on mount
     useEffect(() => {
+        let newDate = new Date()
+        const year = newDate.toLocaleString("default", { year: "numeric" })
+        const month = newDate.toLocaleString("default", { month: "2-digit" })
+        const day = newDate.toLocaleString("default", { day: "2-digit" })
+        const date = year + '-' + month + '-' + day
+
         handleDataFetch(defaultLatitude, defaultLongitude)
+        handleFetchHourly(defaultLatitude, defaultLongitude, dateToday)
     }, [])
 
     return { 
@@ -44,7 +57,8 @@ function useGetData() {
         setLocationData,
         defaultCity,
         defaultCityId,
-        defaultTimeZone
+        defaultTimeZone,
+        dateToday
     }
 }
 
