@@ -59,6 +59,7 @@ export default function Home(props: Props) {
     getData(latitude, longitude)
     getHourly(latitude, longitude, dateToday)
     setLocationData({})
+    console.log(city, latitude, longitude, id, timezone)
   }
 
   let dataForecast = []
@@ -160,7 +161,7 @@ export default function Home(props: Props) {
 
                 <div className='text-sm mx-2'>Saved locations</div>
 
-                <div className='flex flex-row flex-wrap items-center justify-center'>
+                <div className='flex flex-row flex-wrap items-center justify-start'>
                   {savedLocations.map((location: any, index: number) => 
                     <button
                       key={index}
@@ -217,7 +218,7 @@ export default function Home(props: Props) {
           {/* Suggested locations */}
           <div className='flex flex-col items-start max-w-screen-lg bg-gray-50 m-4'>
             <div className='text-sm mx-2'>Suggest locations</div>
-            <div className='flex flex-row flex-wrap'>
+            <div className='flex flex-row flex-wrap items-center justify-start'>
               <button 
                 onClick={() => selectLocation('40.71427','-74.00597', 'New York', '5128581', 'America/New_York')} 
                 className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
@@ -232,6 +233,21 @@ export default function Home(props: Props) {
                 onClick={() => selectLocation('41.85003','-87.65005', 'Chicago', '4887398', 'America/Chicago')} 
                 className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
                   Chicago
+              </button>
+              <button 
+                onClick={() => selectLocation('51.50853','-0.12574', 'London', '2643743', 'Europe/London')} 
+                className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                  London
+              </button>
+              <button 
+                onClick={() => selectLocation('39.9075','116.39723', 'Beijing', '1816670', 'Asia/Shanghai')} 
+                className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                  Beijing
+              </button>
+              <button 
+                onClick={() => selectLocation('35.6895','139.69171', 'Tokyo', '1850147', 'Asia/Tokyo')} 
+                className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                  Tokyo
               </button>
             </div>
           </div>
