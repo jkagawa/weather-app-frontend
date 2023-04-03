@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
 import { daysOfWeek } from '../tools/daysOfWeek'
-import { hasData } from '../tools/functions'
+import { hasData, convertDateFormatPartial, convertTimeFormat } from '../tools/functions'
 import { weatherCodeMap } from '../tools/weatherCodeMap'
 
 interface Props {
@@ -45,6 +44,8 @@ export default function DayModal(props: Props) {
             >
                 <div className="w-full flex flex-col">
                     <div className="flex flex-row justify-end">
+
+                        {/* Close button */}
                         <p 
                             className="flex m-3 bg-gray-400 p-2 rounded hover:bg-black text-white cursor-pointer"
                             onClick={ props.closeModal }
@@ -53,10 +54,14 @@ export default function DayModal(props: Props) {
                         </p>
                     </div>
                     <div className="flex-flex-col items-center text-center mt-3 p-2 overflow-auto">
+                        
+                        {/* Location name */}
                         <div className="text-3xl">{props.currentCity}</div>
+
+                        {/* Day and Date */}
                         <div className="text-sm">
                             <div>{dayText}</div>
-                            <div>{date} {timezone_abbreviation}</div>
+                            <div>{convertDateFormatPartial(date)} {timezone_abbreviation}</div>
                         </div>
                         {
                             time.map((time: any, index) => 
@@ -65,8 +70,13 @@ export default function DayModal(props: Props) {
                                         key={index}
                                         className='flex flex-row items-center justify-evenly m-3'
                                     >
-                                        <div>{time.split('T')[1]}</div>
+                                        {/* Time */}
+                                        <div>{convertTimeFormat(time.split('T')[1])}</div>
+
+                                        {/* Temperature */}
                                         <div className='text-xl'>{Math.round(Number(temp[index]))}°F</div>
+
+                                        {/* Weather icon */}
                                         <div className='w-12'><img src={weatherCodeMap[weathercode[index]][1]} alt={weatherCodeMap[weathercode[index]][0]} /></div>
                                           
                                     </div>)

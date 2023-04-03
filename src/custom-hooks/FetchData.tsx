@@ -18,6 +18,11 @@ function useGetData() {
     const day = newDate.toLocaleString("default", { day: "2-digit" })
     const dateToday = year + '-' + month + '-' + day
 
+    const hour = newDate.getHours()>12? (newDate.getHours()-12).toString() : newDate.getHours()
+    const minute = newDate.getMinutes()>9? newDate.getMinutes() : '0' + newDate.getMinutes()
+    const am_or_pm = newDate.getHours()>12? 'PM' : 'AM'
+    const currentTime = hour + ':' + minute + ' ' + am_or_pm
+
     async function handleDataFetch(latitude: string, longitude: string) {
         const result = await server_calls.getForecast(latitude, longitude)
         setWeatherData(result)
@@ -35,12 +40,6 @@ function useGetData() {
     
     // useEffect on mount
     useEffect(() => {
-        let newDate = new Date()
-        const year = newDate.toLocaleString("default", { year: "numeric" })
-        const month = newDate.toLocaleString("default", { month: "2-digit" })
-        const day = newDate.toLocaleString("default", { day: "2-digit" })
-        const date = year + '-' + month + '-' + day
-
         handleDataFetch(defaultLatitude, defaultLongitude)
         handleFetchHourly(defaultLatitude, defaultLongitude, dateToday)
     }, [])
@@ -58,7 +57,7 @@ function useGetData() {
         defaultCity,
         defaultCityId,
         defaultTimeZone,
-        dateToday
+        dateToday, currentTime
     }
 }
 

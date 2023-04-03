@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import DayModal from '../components/DayModal'
 import useGetData from '../custom-hooks/FetchData'
 import { daysOfWeek } from '../tools/daysOfWeek'
-import { hasData } from '../tools/functions'
+import { hasData, convertDateFormatFull, convertDateFormatPartial } from '../tools/functions'
 import { weatherCodeMap } from '../tools/weatherCodeMap'
 import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
@@ -24,7 +24,7 @@ export default function Home(props: Props) {
     defaultLatitude, defaultLongitude,
     getLocation, locationData, setLocationData,
     defaultCity, defaultCityId, defaultTimeZone,
-    dateToday
+    dateToday, currentTime
   } = useGetData()
 
   const [ modalOpen, setModalOpen ] = useState(false)
@@ -40,13 +40,14 @@ export default function Home(props: Props) {
 
   const { register, handleSubmit } = useForm({})
 
-  function openModal(e: any, currDate: string) {
+  function openModal(e: any, date: string) {
     setSelectedItem(e.target.getAttribute('data-id'))
-    getHourly(currLatitude, currLongitude, currDate)
+    getHourly(currLatitude, currLongitude, date)
     setModalOpen(true)
   }
 
   function closeModal() {
+    getHourly(currLatitude, currLongitude, dateToday)
     setModalOpen(false)
   }
 
@@ -284,7 +285,7 @@ export default function Home(props: Props) {
               { dataForecast.length>0? (
                 <div>
                   <div className="text-xs">
-                    {dataForecast[0][3]} {dataForecast[0][2]}
+                    {convertDateFormatFull(dataForecast[0][2])} as of {currentTime}
                   </div>
 
                   {/* Forecast Now */}
@@ -338,7 +339,7 @@ export default function Home(props: Props) {
                       {/* Day and Date */}
                       <div className='flex flex-col items-center justify-center'>
                         <div className='text-lg'>{d[3]}</div>
-                        <div className='text-xs'>{d[2]}</div>
+                        <div className='text-xs'>{convertDateFormatPartial(d[2])}</div>
                       </div>
 
                       {/* High */}
@@ -382,7 +383,7 @@ export default function Home(props: Props) {
                       {/* Day and Date */}
                       <div className='w-1/4'>
                         <div className='text-lg'>{d[3]}</div>
-                        <div className='text-xs'>{d[2]}</div>
+                        <div className='text-xs'>{convertDateFormatPartial(d[2])}</div>
                       </div>
 
                       {/* High */}

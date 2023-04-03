@@ -39,8 +39,9 @@ export default function Nav(props: Props) {
 
     return (
         <nav className={`flex flex-row items-center justify-between flex-wrap w-full fixed p-3 text-white z-10 ` + bgColorHex}>
-            <div className='mr-3 text-2xl h-8'>
-                Seer Weather App
+            <div className='mr-3 text-2xl h-8 flex flex-row items-center justify-center'>
+                <div className='w-12 mr-2'><img src="src/assets/cloud_icon_white.png" alt="Cloud Icon" /></div>
+                <div>Seer</div>
             </div>
             <div className='md:hidden'>
                 <button 
