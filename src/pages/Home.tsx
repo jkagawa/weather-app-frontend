@@ -197,7 +197,7 @@ export default function Home(props: Props) {
             </form>
 
             {/* Results */}
-            <div>
+            <div className='flex flex-col'>
               {
                 Object.hasOwn(locationData, 'results')? (
                   locationData.results.map((location: any, index: any) => (
@@ -206,7 +206,7 @@ export default function Home(props: Props) {
                       className={"bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"} 
                       onClick={() => selectLocation(location.latitude, location.longitude, location.name, location.id, location.timezone)}
                     >
-                      {location.name} {location.country} {location.population} {location.timezone} {location.latitude} {location.longitude}, ID: {location.id}, Time Zone: {location.timezone}
+                      {location.name} {location.country} {location.population? '(population: ' + location.population.toLocaleString() + ')' : ''}
                     </button>)
                   )
                 ) : hasData(locationData)? (
