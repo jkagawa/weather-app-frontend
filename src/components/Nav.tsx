@@ -12,7 +12,6 @@ interface Props {
 
 export default function Nav(props: Props) {
     const bgColorHex = 'bg-[#0E86D4]'
-    const navColorHex = '[#0E86D4]'
     const [ isVisible, setIsVisible ] = useState<boolean>(false)
 
     function toggleMenu() {
