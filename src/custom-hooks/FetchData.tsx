@@ -18,10 +18,11 @@ function useGetData() {
     const day = newDate.toLocaleString("default", { day: "2-digit" })
     const dateToday = year + '-' + month + '-' + day
 
-    const hour = newDate.getHours()>12? (newDate.getHours()-12).toString() : newDate.getHours()
+    const hour = newDate.getHours()>12? (newDate.getHours()-12).toString() : newDate.getHours()==0? '12' : newDate.getHours()
     const minute = newDate.getMinutes()>9? newDate.getMinutes() : '0' + newDate.getMinutes()
     const am_or_pm = newDate.getHours()>12? 'PM' : 'AM'
     const currentTime = hour + ':' + minute + ' ' + am_or_pm
+    const isDay = newDate.getHours()>5 && newDate.getHours()<18? true : false
 
     async function handleDataFetch(latitude: string, longitude: string) {
         const result = await server_calls.getForecast(latitude, longitude)
@@ -57,7 +58,7 @@ function useGetData() {
         defaultCity,
         defaultCityId,
         defaultTimeZone,
-        dateToday, currentTime
+        dateToday, currentTime, isDay
     }
 }
 

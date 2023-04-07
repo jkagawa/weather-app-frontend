@@ -35,7 +35,7 @@ export default function DayModal(props: Props) {
     if(!props.modalOpen) return (<></>);
     return (
         <div
-            className='fixed w-full h-full flex overflow-auto z-1 justify-center align-middle bg-gray-700 bg-opacity-50 z-10'
+            className='fixed w-full h-full flex overflow-auto justify-center align-middle bg-gray-700 bg-opacity-50 z-50'
             onClick={ props.closeModal }
         >
             <div 

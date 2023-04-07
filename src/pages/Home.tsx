@@ -24,7 +24,7 @@ export default function Home(props: Props) {
     defaultLatitude, defaultLongitude,
     getLocation, locationData, setLocationData,
     defaultCity, defaultCityId, defaultTimeZone,
-    dateToday, currentTime
+    dateToday, currentTime, isDay
   } = useGetData()
 
   const [ modalOpen, setModalOpen ] = useState(false)
@@ -150,7 +150,16 @@ export default function Home(props: Props) {
         hourlyData={hourlyData}
       />
 
-      <div className="flex flex-col items-center justify-center text-center pt-14 pb-10">
+      {/* Background */}
+      <div className='fixed z-0 w-screen left-1/2 transform -translate-x-1/2'>
+        {
+          dataHourly.length>0? (
+            <img src={isDay? weatherCodeMap[dataHourly[2]][2] : weatherCodeMap[dataHourly[2]][3]} alt={weatherCodeMap[dataHourly[2]][0]} className='h-screen w-screen object-cover m-auto' />
+          ) : (<></>)
+        }
+      </div>
+
+      <div className="flex flex-col items-center justify-center text-center pt-14 pb-10 z-10 relative">
 
           {/* Heading */}
           <div className="text-4xl font-semibold p-4">Welcome to Seer!</div>
