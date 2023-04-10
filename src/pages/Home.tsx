@@ -53,6 +53,7 @@ export default function Home(props: Props) {
   }
 
   const selectLocation = (latitude: string, longitude: string, city: string, id: string, timezone: string) => {
+    setShowLocationSelection(false)
     setCurrentCity(city)
     setCurrLatitude(latitude)
     setCurrLongitude(longitude)
@@ -184,7 +185,8 @@ export default function Home(props: Props) {
               {/* Form */}
               <form 
                 onSubmit={handleSubmit(onSubmit)} 
-                className='flex flex-row items-center justify-center max-w-xl'
+                onChange={handleSubmit(onSubmit)}
+                className='flex flex-row items-center justify-center max-w-xl w-full'
               >
                 <Input 
                   {...register('location')} 
