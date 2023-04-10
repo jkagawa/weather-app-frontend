@@ -35,6 +35,7 @@ export default function Home(props: Props) {
   const [ currentCityId, setCurrentCityId ] = useState<string>(defaultCityId)
   const [ currentTimeZone, setCurrentTimeZone ] = useState<string>(defaultTimeZone)
   const [ locationSaved, setLocationSaved ] = useState(false)
+  const [ showLocationSelection, setShowLocationSelection ] = useState(false)
 
   const { handleSaveLocation, savedLocations, handleGetSavedLocations } = HandleDB()
 
@@ -126,6 +127,10 @@ export default function Home(props: Props) {
     }
   }
 
+  const toggleLocationSelection = () => {
+    setShowLocationSelection(!showLocationSelection)
+  }
+
   useEffect(() => {
     if(props.token) {
       handleGetSavedLocations(props.token)
@@ -161,107 +166,121 @@ export default function Home(props: Props) {
 
       <div className="flex flex-col items-center justify-center text-center pt-14 pb-10 z-10 relative">
 
-          <div className='bg-gray-50 m-2 rounded-xl'>
+          {/* Toggle show/hide location selection */}
+          <button 
+            onClick={toggleLocationSelection}
+            className='px-2 py-0 mt-2 rounded-md bg-gray-500 text-white'
+          >
+            Pick a different location
+            <i className={'ml-2 fa-solid fa-chevron-down ' + (showLocationSelection? 'rotate-180' : '')}></i>
+          </button>
 
-            {/* Saved locations */}
-            {
-              savedLocations.length>0? (
-                <div className='flex flex-col items-start max-w-screen-lg m-4'>
+          {/* Location selection */}
+          <div className={'overflow-hidden transition-all duration-300 ease-in ' + (showLocationSelection? 'max-h-screen' : 'max-h-0')}>
+            
+            {/* Search location */}
+            <div className='flex flex-col items-center justify-center bg-gray-50 rounded-xl m-2 p-2'>
 
-                  <div className='text-sm mx-2'>Saved locations</div>
+              {/* Form */}
+              <form 
+                onSubmit={handleSubmit(onSubmit)} 
+                className='flex flex-row items-center justify-center max-w-xl'
+              >
+                <Input 
+                  {...register('location')} 
+                  name="location" 
+                  type="text"
+                  label="City or postal code"
+                />
+                <button className='flex justify-start m-3 p-2 rounded bg-gray-200 text-black hover:bg-[#0E86D4] hover:text-white'>
+                  Search
+                </button>
+              </form>
 
-                  <div className='flex flex-row flex-wrap items-center justify-start'>
-                    {savedLocations.map((location: any, index: number) => 
-                      <button
-                        key={index}
-                        onClick={() => selectLocation(location.latitude, location.longitude, location.name, location.location_api_id, location.timezone)} 
-                        className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"
-                      >{location.name}</button>
-                    )}
+              {/* Results */}
+              <div className='flex flex-col'>
+                {
+                  Object.hasOwn(locationData, 'results')? (
+                    locationData.results.map((location: any, index: any) => (
+                      <button 
+                        key={index} 
+                        className={"bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"} 
+                        onClick={() => selectLocation(location.latitude, location.longitude, location.name, location.id, location.timezone)}
+                      >
+                        {location.name} {location.country} {location.population? '(population: ' + location.population.toLocaleString() + ')' : ''}
+                      </button>)
+                    )
+                  ) : hasData(locationData)? (
+                    <div>No result found</div>
+                  ) : (<></>)
+                }
+              </div>
+            </div>
+
+            {/* Clickable locations */}
+            <div className='bg-gray-50 m-1 rounded-xl'>
+
+              {/* Saved locations */}
+              {
+                savedLocations.length>0? (
+                  <div className='flex flex-col items-start max-w-screen-lg m-2'>
+
+                    <div className='text-sm mx-2'>Saved locations</div>
+
+                    <div className='flex flex-row flex-wrap items-center justify-start'>
+                      {savedLocations.map((location: any, index: number) => 
+                        <button
+                          key={index}
+                          onClick={() => selectLocation(location.latitude, location.longitude, location.name, location.location_api_id, location.timezone)} 
+                          className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"
+                        >{location.name}</button>
+                      )}
+                    </div>
+
                   </div>
+                ) : (<></>)
+              }
 
+              {/* Suggested locations */}
+              <div className='flex flex-col items-start max-w-screen-lg m-4'>
+                <div className='text-sm mx-2'>Suggest locations</div>
+                <div className='flex flex-row flex-wrap items-center justify-start'>
+                  <button 
+                    onClick={() => selectLocation('40.71427','-74.00597', 'New York', '5128581', 'America/New_York')} 
+                    className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                      New York
+                  </button>
+                  <button 
+                    onClick={() => selectLocation('37.77493','-122.41942', 'San Francisco', '5391959', 'America/Los_Angeles')} 
+                    className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                      San Francisco
+                  </button>
+                  <button 
+                    onClick={() => selectLocation('41.85003','-87.65005', 'Chicago', '4887398', 'America/Chicago')} 
+                    className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                      Chicago
+                  </button>
+                  <button 
+                    onClick={() => selectLocation('51.50853','-0.12574', 'London', '2643743', 'Europe/London')} 
+                    className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                      London
+                  </button>
+                  <button 
+                    onClick={() => selectLocation('39.9075','116.39723', 'Beijing', '1816670', 'Asia/Shanghai')} 
+                    className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                      Beijing
+                  </button>
+                  <button 
+                    onClick={() => selectLocation('35.6895','139.69171', 'Tokyo', '1850147', 'Asia/Tokyo')} 
+                    className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
+                      Tokyo
+                  </button>
                 </div>
-              ) : (<></>)
-            }
-
-            {/* Suggested locations */}
-            <div className='flex flex-col items-start max-w-screen-lg m-4'>
-              <div className='text-sm mx-2'>Suggest locations</div>
-              <div className='flex flex-row flex-wrap items-center justify-start'>
-                <button 
-                  onClick={() => selectLocation('40.71427','-74.00597', 'New York', '5128581', 'America/New_York')} 
-                  className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                    New York
-                </button>
-                <button 
-                  onClick={() => selectLocation('37.77493','-122.41942', 'San Francisco', '5391959', 'America/Los_Angeles')} 
-                  className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                    San Francisco
-                </button>
-                <button 
-                  onClick={() => selectLocation('41.85003','-87.65005', 'Chicago', '4887398', 'America/Chicago')} 
-                  className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                    Chicago
-                </button>
-                <button 
-                  onClick={() => selectLocation('51.50853','-0.12574', 'London', '2643743', 'Europe/London')} 
-                  className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                    London
-                </button>
-                <button 
-                  onClick={() => selectLocation('39.9075','116.39723', 'Beijing', '1816670', 'Asia/Shanghai')} 
-                  className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                    Beijing
-                </button>
-                <button 
-                  onClick={() => selectLocation('35.6895','139.69171', 'Tokyo', '1850147', 'Asia/Tokyo')} 
-                  className="bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white">
-                    Tokyo
-                </button>
               </div>
             </div>
 
           </div>
-
-          {/* Search location */}
-          <div className='flex flex-col items-center justify-center bg-gray-50 rounded-xl m-2 p-2'>
-
-            {/* Form */}
-            <form 
-              onSubmit={handleSubmit(onSubmit)} 
-              className='flex flex-row items-center justify-center max-w-xl'
-            >
-              <Input 
-                {...register('location')} 
-                name="location" 
-                type="text"
-                label="City or postal code"
-              />
-              <button className='flex justify-start m-3 p-2 rounded bg-gray-200 text-black hover:bg-[#0E86D4] hover:text-white'>
-                Search
-              </button>
-            </form>
-
-            {/* Results */}
-            <div className='flex flex-col'>
-              {
-                Object.hasOwn(locationData, 'results')? (
-                  locationData.results.map((location: any, index: any) => (
-                    <button 
-                      key={index} 
-                      className={"bg-gray-200 py-1 px-2 m-2 rounded-2xl hover:bg-slate-500 hover:text-white"} 
-                      onClick={() => selectLocation(location.latitude, location.longitude, location.name, location.id, location.timezone)}
-                    >
-                      {location.name} {location.country} {location.population? '(population: ' + location.population.toLocaleString() + ')' : ''}
-                    </button>)
-                  )
-                ) : hasData(locationData)? (
-                  <div>No result found</div>
-                ) : (<></>)
-              }
-            </div>
-          </div>
-        
+          
           <div>
 
               {/* Current location */}
