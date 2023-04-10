@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
 import HandleDB from '../custom-hooks/HandleDB'
+import Loader from '../components/Loader'
 
 interface Props {
   loggedIn: boolean,
@@ -17,6 +18,7 @@ export default function Profile(props: Props) {
     const [ showTextBox, SetShowTextBox ] = useState(false)
     const [ showToast, setShowToast ] = useState<boolean>(false)
     const [ showError, setShowError ] = useState<boolean>(false)
+    const [ showLoader, setShowLoader ] = useState(false)
     
     const { register, handleSubmit } = useForm({})
     const { userInfo, handleUpdateUserInfo, handleDeleteSavedLocation } = HandleDB()
@@ -49,7 +51,17 @@ export default function Profile(props: Props) {
 
     useEffect(() => {
         if(props.token) {
-          handleGetSavedLocations(props.token)
+          const fetchData = async () => {
+            const data = await handleGetSavedLocations(props.token)
+            return data
+          }
+
+          setShowLoader(true)
+
+          fetchData()
+          .then(() => {
+            setShowLoader(false)
+          })
         }
     }, [props.token])
 
@@ -61,7 +73,6 @@ export default function Profile(props: Props) {
         } else if(Object.hasOwn(userInfo, 'message')) {
             setShowError(true)
         }
-        console.log(userInfo)
     }, [userInfo])
 
     return (
@@ -112,7 +123,7 @@ export default function Profile(props: Props) {
                         <div className='flex flex-row items-center justify-center m-3'>
                           <button className='flex flex-row bg-gray-200 rounded-2xl py-1 px-2 mx-2 group focus:bg-blue-200'>
 
-                            <div className=''>
+                            <div>
                               {location.name}
                             </div>
 
@@ -129,7 +140,11 @@ export default function Profile(props: Props) {
                       )
                     )
                   ) : (
-                    <>EMPTY</>
+                        showLoader? (
+                          <Loader />
+                        ) : (
+                          <div>EMPTY</div>
+                        )
                   )
                 }
               </div>
