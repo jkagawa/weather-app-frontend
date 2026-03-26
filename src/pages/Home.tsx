@@ -386,10 +386,10 @@ export default function Home(props: Props) {
                   key={index}
                   data-id={d[5]}
                   className={
-                    'flex flex-row items-center justify-between p-3 px-4 cursor-pointer rounded-xl transition-all duration-200 hover:bg-white/20 ' +
+                    'flex flex-row items-center justify-between p-3 px-4 cursor-pointer rounded-xl transition-all duration-200 ' +
                     (index === currDay
-                      ? 'bg-sky-500/35 backdrop-blur-md border border-sky-400/30 text-white'
-                      : 'glass text-white/90')
+                      ? 'bg-sky-500/40 backdrop-blur-md border border-sky-400/30 text-white'
+                      : 'glass text-white/90 hover:bg-white/20')
                   }
                   onClick={(e) => openModal(e, d[2])}
                 >

@@ -179,6 +179,7 @@ export default function Profile(props: Props) {
                                         name="first_name"
                                         type="text"
                                         label="New first name"
+                                        dark
                                     />
                                     <button className="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-medium transition-all duration-200 text-sm">
                                         Save Changes

@@ -88,12 +88,14 @@ export default function LogIn(props: Props) {
                             name="email"
                             type="email"
                             label="Email"
+                            dark
                         />
                         <Input
                             {...register('password', { required: true })}
                             name="password"
                             type="password"
                             label="Password"
+                            dark
                         />
                         <button className="w-full mt-2 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-medium transition-all duration-200 shadow-sm hover:shadow-sky-400/30 text-sm tracking-wide">
                             Log In
