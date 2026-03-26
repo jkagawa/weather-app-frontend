@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import cloudIconWhite from '../assets/cloud_icon_white.png'
 
@@ -11,7 +11,6 @@ interface Props {
 }
 
 export default function Nav(props: Props) {
-    const bgColorHex = 'bg-[#0E86D4]'
     const [ isVisible, setIsVisible ] = useState<boolean>(false)
 
     function toggleMenu() {
@@ -37,58 +36,54 @@ export default function Nav(props: Props) {
     }
 
     return (
-        <nav className={`flex flex-row items-center justify-between flex-wrap w-full fixed p-3 text-white z-50 ` + bgColorHex}>
-            <div className='mr-3 text-2xl h-8 flex flex-row items-center justify-center'>
-                <div className='w-12 mr-2'><img src={cloudIconWhite} alt="Cloud Icon" /></div>
-                <div>Seer</div>
-            </div>
+        <nav className="flex flex-row items-center justify-between flex-wrap w-full fixed p-4 text-white z-50 glass-nav">
+            {/* Logo */}
+            <Link to="/" onClick={closeMenu} className="mr-3 flex flex-row items-center gap-2 group">
+                <div className="w-7 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <img src={cloudIconWhite} alt="Cloud Icon" />
+                </div>
+                <span className="text-lg font-semibold tracking-widest text-white/90 group-hover:text-white transition-colors">
+                    SEER
+                </span>
+            </Link>
+
+            {/* Mobile hamburger */}
             <div className='md:hidden'>
-                <button 
+                <button
                     onClick={toggleMenu}
-                    className={`flex items-center justify-center text-white rounded border border-[#0E86D4] hover:text-white hover:border-white py-1 px-2 text-xl ` + bgColorHex}
+                    className="flex items-center justify-center text-white/70 hover:text-white py-1 px-2 text-lg hover:bg-white/10 rounded-lg transition-all duration-200"
                 >
                     <i className='fas fa-bars'></i>
                 </button>
             </div>
 
-                    <div className={`w-full ${isVisible? 'block' : 'hidden'} md:w-auto md:block`}>
-                        <div className="flex flex-col md:flex-row justify-center items-end md:justify-end md:items-center">
-                            <button className="py-3 px-2 md:py-0 text-gray-300 hover:text-white">
-                                <Link to='/' onClick={closeMenu}>
-                                    Home
-                                </Link>
+            {/* Nav links */}
+            <div className={`w-full ${isVisible ? 'block animate-slide-down' : 'hidden'} md:w-auto md:block`}>
+                <div className="flex flex-col md:flex-row justify-end items-end md:items-center gap-1 pt-2 md:pt-0">
+                    <button className="nav-link">
+                        <Link to='/' onClick={closeMenu}>Home</Link>
+                    </button>
+                    <button className="nav-link">
+                        <Link to='/profile' onClick={closeMenu}>Profile</Link>
+                    </button>
+                    {
+                        !props.loggedIn ? (
+                            <>
+                                <button className="nav-link">
+                                    <Link to='/signup' onClick={signUp}>Sign Up</Link>
+                                </button>
+                                <button className="py-2 px-4 bg-sky-500 hover:bg-sky-400 text-white text-sm font-medium transition-all duration-200 rounded-lg shadow-sm hover:shadow-sky-400/30">
+                                    <Link to='/login' onClick={signIn}>Log In</Link>
+                                </button>
+                            </>
+                        ) : (
+                            <button className="py-2 px-4 border border-white/20 hover:bg-white/10 text-white/80 hover:text-white text-sm font-medium transition-all duration-200 rounded-lg">
+                                <Link to='/' onClick={signOut}>Sign Out</Link>
                             </button>
-                            <button className="py-3 px-2 md:py-0 text-gray-300 hover:text-white">
-                                <Link to='/profile' onClick={closeMenu}>
-                                    Profile
-                                </Link>
-                            </button>
-                            {
-                                !props.loggedIn? (
-                                    <>
-                                        <button className="py-3 px-2 md:py-0 text-gray-300 hover:text-white">
-                                            <Link to='/signup' onClick={signUp}>
-                                                Sign Up
-                                            </Link>
-                                        </button>
-                                        <button className="py-3 px-2 md:py-0 text-gray-300 hover:text-white">
-                                            <Link to='/login' onClick={signIn}>
-                                                Log In
-                                            </Link>
-                                        </button>
-                                    </>
-                                                
-                                ) : (
-                                    <button className="py-3 px-2 md:py-0 text-gray-300 hover:text-white">
-                                            <Link to='/' onClick={signOut}>
-                                                Sign Out
-                                            </Link>
-                                            </button>
-                                        )
-                                    }
-                            
-                        </div>
-                    </div>
+                        )
+                    }
+                </div>
+            </div>
         </nav>
     )
 }

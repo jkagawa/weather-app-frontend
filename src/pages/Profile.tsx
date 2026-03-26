@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
 import HandleDB from '../custom-hooks/HandleDB'
@@ -19,7 +19,7 @@ export default function Profile(props: Props) {
     const [ showToast, setShowToast ] = useState<boolean>(false)
     const [ showError, setShowError ] = useState<boolean>(false)
     const [ showLoader, setShowLoader ] = useState(false)
-    
+
     const { register, handleSubmit } = useForm({})
     const { userInfo, handleUpdateUserInfo, handleDeleteSavedLocation } = HandleDB()
 
@@ -76,108 +76,120 @@ export default function Profile(props: Props) {
     }, [userInfo])
 
     return (
-        <>
-         {/* Toast */}
-         {
-              showToast? (
-                  <div className="w-full pt-14 flex items-center justify-center bg-green-400 text-white fixed">
-                      <div className="w-full flex items-center justify-center">Your info successfully updated</div>
-                      <button 
-                          className="flex items-center justify-center p-2 cursor-pointer text-xl"
-                          onClick={closeToast}
-                      >
-                          <i className="fa-solid fa-xmark"></i>
-                      </button>
-                  </div>
-              ) : (<></>)
-          }
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex flex-col">
 
-          {/* Error Message */}
-          {
-              showError? (
-                  <div className="w-full pt-14 flex items-center justify-center bg-red-500 text-white fixed">
-                      <div className="w-full flex items-center justify-center">Update failed</div>
-                      <button 
-                          className="flex items-center justify-center p-2 cursor-pointer text-xl"
-                          onClick={closeToast}
-                      >
-                          <i className="fa-solid fa-xmark"></i>
-                      </button>
-                  </div>
-              ) : (<></>)
-          }
-
-        {
-          !props.loggedIn? (
-            <div className="flex flex-col items-center justify-center text-center pt-14">
-              <div className="text-4xl font-semibold p-4">Please log in</div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center text-center pt-14">
-              <div className="text-4xl font-semibold p-4">Hi, {props.firstName}</div>
-              <div>
-                <div className='text-xl'>Your saved locations</div>
-                {
-                  savedLocations.length>0? (
-                    savedLocations.map((location: any, index) => (
-                        <div className='flex flex-row items-center justify-center m-3'>
-                          <button className='flex flex-row bg-gray-200 rounded-2xl py-1 px-2 mx-2 group focus:bg-blue-200'>
-
-                            <div>
-                              {location.name}
-                            </div>
-
-                            <button 
-                              className='bg-red-500 text-white h-6 w-6 rounded-full hidden group-hover:block group-focus:block ml-1'
-                              onClick={() => deleteItem(location.name, location.id)}
-                            >
-                              <i className="fa-solid fa-xmark"></i>
-                            </button>
-                          </button>
-                          
-                        </div>
-                        
-                      )
-                    )
-                  ) : (
-                        showLoader? (
-                          <Loader />
-                        ) : (
-                          <div>EMPTY</div>
-                        )
-                  )
-                }
-              </div>
-              <button 
-                className='flex justify-start m-3 p-2 rounded text-[#0E86D4] underline'
-                onClick={toggleShowTextBox}  
-              >
-                Edit first name
-              </button>
-              {
-                showTextBox? (<>
-                    {/* Form */}
-                    <form 
-                      onSubmit={handleSubmit(onSubmit)} 
-                      className='flex flex-col items-center justify-center max-w-xl'
-                    >
-                    <div className="flex flex-col items-start justify-center my-6">
-                        <Input
-                            {...register('first_name', { required: true })} 
-                            name="first_name"
-                            type="text"
-                            label="First name"
-                        />
+            {/* Toast */}
+            {showToast && (
+                <div className="w-full pt-14 flex items-center justify-center bg-emerald-500/90 backdrop-blur-sm text-white fixed z-40 animate-fade-in">
+                    <div className="w-full flex items-center justify-center text-sm font-medium py-1">
+                        Your info was updated successfully
                     </div>
-                    <button className='flex justify-start m-3 p-2 rounded bg-gray-200 text-black hover:bg-[#0E86D4] hover:text-white'>
-                      Submit
+                    <button
+                        className="flex items-center justify-center p-3 cursor-pointer hover:text-white/70 transition-colors"
+                        onClick={closeToast}
+                    >
+                        <i className="fa-solid fa-xmark"></i>
                     </button>
-                  </form>
-                </>) : (<></>)
-              }
+                </div>
+            )}
+
+            {/* Error toast */}
+            {showError && (
+                <div className="w-full pt-14 flex items-center justify-center bg-red-500/90 backdrop-blur-sm text-white fixed z-40 animate-fade-in">
+                    <div className="w-full flex items-center justify-center text-sm font-medium py-1">
+                        Update failed — please try again
+                    </div>
+                    <button
+                        className="flex items-center justify-center p-3 cursor-pointer hover:text-white/70 transition-colors"
+                        onClick={closeToast}
+                    >
+                        <i className="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            )}
+
+            <div className="flex-1 flex flex-col items-center pt-24 pb-12 px-4">
+
+                {!props.loggedIn ? (
+                    <div className="flex flex-col items-center justify-center flex-1">
+                        <div className="glass rounded-2xl p-10 text-center shadow-glass">
+                            <i className="fa-solid fa-lock text-white/30 text-4xl mb-4"></i>
+                            <div className="text-2xl font-light text-white">Sign in to view your profile</div>
+                            <div className="text-sm text-white/50 mt-2">Log in or create an account to save locations</div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="w-full max-w-md flex flex-col gap-4">
+
+                        {/* Greeting card */}
+                        <div className="glass rounded-2xl p-6 shadow-glass text-center">
+                            <div className="text-4xl font-light text-white tracking-tight">Hi, {props.firstName}</div>
+                            <div className="text-sm text-white/50 mt-1">{props.email}</div>
+                        </div>
+
+                        {/* Saved locations card */}
+                        <div className="glass rounded-2xl p-5 shadow-glass">
+                            <div className="text-xs font-semibold tracking-widest text-white/50 uppercase mb-4">Saved Locations</div>
+
+                            {showLoader ? (
+                                <div className="flex justify-center py-4">
+                                    <Loader />
+                                </div>
+                            ) : savedLocations.length > 0 ? (
+                                <div className="flex flex-col gap-2">
+                                    {savedLocations.map((location: any, index: number) => (
+                                        <div key={index} className="flex flex-row items-center justify-between glass-dark rounded-xl py-3 px-4 group">
+                                            <div className="flex items-center gap-2">
+                                                <i className="fa-solid fa-star text-sky-400 text-xs"></i>
+                                                <span className="text-white/90 text-sm font-medium">{location.name}</span>
+                                            </div>
+                                            <button
+                                                className="w-7 h-7 rounded-full bg-red-500/0 hover:bg-red-500 flex items-center justify-center text-white/30 hover:text-white transition-all duration-200 text-xs"
+                                                onClick={() => deleteItem(location.name, location.id)}
+                                            >
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-6 text-white/30 text-sm">
+                                    No saved locations yet
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Edit name card */}
+                        <div className="glass rounded-2xl p-5 shadow-glass">
+                            <button
+                                className="flex items-center gap-2 text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors duration-200"
+                                onClick={toggleShowTextBox}
+                            >
+                                <i className={`fa-solid fa-chevron-right text-xs transition-transform duration-200 ${showTextBox ? 'rotate-90' : ''}`}></i>
+                                Edit first name
+                            </button>
+
+                            {showTextBox && (
+                                <form
+                                    onSubmit={handleSubmit(onSubmit)}
+                                    className='flex flex-col gap-4 mt-4 animate-fade-in'
+                                >
+                                    <Input
+                                        {...register('first_name', { required: true })}
+                                        name="first_name"
+                                        type="text"
+                                        label="New first name"
+                                    />
+                                    <button className="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-medium transition-all duration-200 text-sm">
+                                        Save Changes
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+
+                    </div>
+                )}
             </div>
-          )
-        }
-        </>
+        </div>
     )
 }
